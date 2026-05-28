@@ -1,0 +1,284 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.phone-frame {
+  width: 360px;
+  min-height: 720px;
+  background: white;
+  border-radius: 24px;
+  padding: 24px 20px;
+  box-sizing: border-box;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+h2 {
+  font-size: 18px;
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+h3 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+.situation-input,
+.new-item-input {
+  width: 100%;
+  padding: 12px;
+  font-size: 14px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+
+.generate-button,
+.call-button,
+.end-call-button,
+.save-button,
+.restart-button,
+.secondary-button,
+.delete-history-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.generate-button,
+.call-button,
+.end-call-button,
+.save-button {
+  background: #111;
+  color: white;
+}
+
+.secondary-button {
+  background: white;
+  color: #111;
+  border: 1px solid #ccc;
+}
+
+.restart-button {
+  background: #2d6cdf;
+  color: white;
+}
+
+.delete-history-button {
+  background: #d64545;
+  color: white;
+}
+
+.topic-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.topic-grid button {
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  background: white;
+  text-align: left;
+  cursor: pointer;
+}
+
+.checklist-section,
+.call-screen,
+.result-screen,
+.history-screen,
+.history-detail-screen {
+  margin-top: 24px;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 16px;
+  background: #fafafa;
+}
+
+.checklist-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.checklist-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #e5e5e5;
+  font-size: 14px;
+}
+
+.checklist-item:last-child {
+  border-bottom: none;
+}
+
+.delete-button {
+  background: #fff0f0;
+  color: #c62828;
+  border: 1px solid #f0b3b3;
+  border-radius: 10px;
+  padding: 6px 10px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.add-item-section {
+  margin-top: 16px;
+}
+
+.add-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 14px;
+  background: white;
+  color: #111;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.call-button {
+  margin-top: 16px;
+}
+
+.call-columns {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.call-column,
+.result-section {
+  border: 1px solid #e3e3e3;
+  border-radius: 14px;
+  padding: 12px;
+  background: white;
+}
+
+.todo-item,
+.complete-item,
+.pending-item {
+  width: 100%;
+  text-align: left;
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.todo-item {
+  border: 1px solid #ccc;
+  background: #fff;
+  cursor: pointer;
+}
+
+.complete-item {
+  border: 1px solid #b8dfc0;
+  background: #edf9f0;
+  cursor: pointer;
+}
+
+.static-item {
+  cursor: default;
+}
+
+.pending-item {
+  border: 1px solid #f1d48b;
+  background: #fff6dd;
+}
+
+.empty-box {
+  padding: 12px;
+  border-radius: 12px;
+  background: #f5f5f5;
+  color: #666;
+  font-size: 14px;
+}
+
+.call-actions,
+.result-actions,
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.history-card {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid #ddd;
+  background: white;
+  text-align: left;
+  cursor: pointer;
+}
+
+.history-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.history-topic {
+  font-weight: 600;
+}
+
+.history-date {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #666;
+}
+
+.status-badge {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  text-transform: capitalize;
+}
+
+.complete-badge {
+  background: #edf9f0;
+  color: #2e7d32;
+}
+
+.pending-badge {
+  background: #fff6dd;
+  color: #a06a00;
+}
