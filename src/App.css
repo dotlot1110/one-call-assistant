@@ -214,30 +214,9 @@ h3 {
   border-bottom: none;
 }
 
-.checklist-actions-inline {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  flex-shrink: 0;
-}
-
 .checklist-text {
   flex: 1;
   margin-right: 8px;
-}
-
-.small-button {
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 6px 8px;
-  cursor: pointer;
-  font-size: 12px;
-}
-
-.small-button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
 }
 
 .delete-button {
@@ -399,4 +378,63 @@ h3 {
 .pending-badge {
   background: #fff6dd;
   color: #a06a00;
+}
+
+/* sortable checklist */
+.sortable-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sortable-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 0;
+  border-bottom: 1px solid #e5e5e5;
+  background: white;
+}
+
+.sortable-item:last-child {
+  border-bottom: none;
+}
+
+.drag-handle {
+  background: none;
+  border: none;
+  color: #777;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 4px;
+  flex-shrink: 0;
+  touch-action: none;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.sortable-item.dragging {
+  opacity: 0.45;
+}
+
+.sortable-item.drop-target {
+  background: #f8f8f8;
+}
+
+.drag-overlay-card {
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  font-size: 14px;
+  max-width: 260px;
+}
+
+.checklist-text {
+  flex: 1;
 }

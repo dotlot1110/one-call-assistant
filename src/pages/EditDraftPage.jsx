@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { move } from "@dnd-kit/helpers";
+
 import EditScreen from "../components/EditScreen";
 import { getDraftById, updateDraft } from "../services/storage";
 
@@ -38,37 +40,23 @@ function EditDraftPage() {
       {
         id: crypto.randomUUID(),
         text: newItem.trim(),
-        status: "todo"
-      }
+        status: "todo",
+      },
     ];
 
     saveUpdatedItems(nextItems);
     setNewItem("");
   }
 
-  function handleMoveItemUp(id) {
-    const currentIndex = draft.items.findIndex((item) => item.id === id);
-    if (currentIndex <= 0) return;
+  function handleReorder(activeId, overId) {
+    if (!draft || activeId === overId) return;
 
-    const nextItems = [...draft.items];
-    [nextItems[currentIndex - 1], nextItems[currentIndex]] = [
-      nextItems[currentIndex],
-      nextItems[currentIndex - 1]
-    ];
+    const oldIndex = draft.items.findIndex((item) => item.id === activeId);
+    const newIndex = draft.items.findIndex((item) => item.id === overId);
 
-    saveUpdatedItems(nextItems);
-  }
+    if (oldIndex === -1 || newIndex === -1) return;
 
-  function handleMoveItemDown(id) {
-    const currentIndex = draft.items.findIndex((item) => item.id === id);
-    if (currentIndex === -1 || currentIndex >= draft.items.length - 1) return;
-
-    const nextItems = [...draft.items];
-    [nextItems[currentIndex], nextItems[currentIndex + 1]] = [
-      nextItems[currentIndex + 1],
-      nextItems[currentIndex]
-    ];
-
+    const nextItems = move(draft.items, oldIndex, newIndex);
     saveUpdatedItems(nextItems);
   }
 
@@ -88,8 +76,7 @@ function EditDraftPage() {
       setNewItem={setNewItem}
       onDeleteItem={handleDeleteItem}
       onAddItem={handleAddItem}
-      onMoveItemUp={handleMoveItemUp}
-      onMoveItemDown={handleMoveItemDown}
+      onReorder={handleReorder}
       onCallNow={handleCallNow}
       onSaveToMyList={handleSaveToMyList}
     />
