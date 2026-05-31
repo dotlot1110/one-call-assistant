@@ -1,4 +1,4 @@
-function HistoryScreen({ history, onOpenDetail, onBackHome }) {
+function HistoryScreen({ history, onOpenDetail }) {
   return (
     <div className="history-screen">
       <h2>Call History</h2>
@@ -31,10 +31,6 @@ function HistoryScreen({ history, onOpenDetail, onBackHome }) {
           ))}
         </div>
       )}
-
-      <button className="secondary-button" onClick={onBackHome}>
-        Back Home
-      </button>
     </div>
   );
 }

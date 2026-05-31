@@ -43,7 +43,7 @@ function HistoryDetailScreen({
 
       <div className="result-actions">
         <button className="secondary-button" onClick={onBackToHistory}>
-          Back to History
+          Back
         </button>
         <button
           className="delete-history-button"

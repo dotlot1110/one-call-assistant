@@ -81,6 +81,18 @@ h3 {
   background: white;
   color: #111;
   border: 1px solid #ccc;
+  margin-top: 16px;
+}
+
+.edit-action-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.half-button {
+  flex: 1;
+  width: auto;
 }
 
 .restart-button {
@@ -106,6 +118,64 @@ h3 {
   background: white;
   text-align: left;
   cursor: pointer;
+}
+
+.phone-frame {
+  width: 360px;
+  min-height: 720px;
+  background: white;
+  border-radius: 24px;
+  padding: 24px 20px 90px;
+  box-sizing: border-box;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  position: relative;
+}
+
+.bottom-nav {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 12px 10px 16px;
+  border-top: 1px solid #ddd;
+  background: white;
+  border-radius: 0 0 24px 24px;
+}
+
+.nav-button {
+  background: none;
+  border: none;
+  color: #666;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.nav-button.active {
+  color: #111;
+  font-weight: 700;
+}
+
+.history-card-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nav-button {
+  background: none;
+  border: none;
+  color: #777;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-button.active {
+  color: #111;
 }
 
 .checklist-section,
@@ -140,6 +210,32 @@ h3 {
   border-bottom: none;
 }
 
+.checklist-actions-inline {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.checklist-text {
+  flex: 1;
+  margin-right: 8px;
+}
+
+.small-button {
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 6px 8px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.small-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
 .delete-button {
   background: #fff0f0;
   color: #c62828;
@@ -163,6 +259,24 @@ h3 {
   border: 1px solid #ccc;
   border-radius: 12px;
   cursor: pointer;
+}
+
+.add-item-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.inline-input {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.inline-add-button {
+  width: 50px;
+  flex-shrink: 0;
+  margin: 0;
 }
 
 .call-button {

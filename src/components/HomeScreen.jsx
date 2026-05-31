@@ -1,4 +1,4 @@
-function HomeScreen({ input, setInput, onGenerate, onSelectTopic, onViewHistory }) {
+function HomeScreen({ input, setInput, onGenerate, onSelectTopic }) {
   return (
     <>
       <p className="subtitle">
@@ -29,10 +29,6 @@ function HomeScreen({ input, setInput, onGenerate, onSelectTopic, onViewHistory 
           Event Inquiry
         </button>
       </div>
-
-      <button className="secondary-button" onClick={onViewHistory}>
-        View History
-      </button>
     </>
   );
 }
