@@ -1,31 +1,19 @@
-import { House, ListChecks, History } from "lucide-react";
+import { NavLink } from "react-router-dom";
 
-function BottomNav({ activeTab, onGoHome, onGoMyList, onGoHistory }) {
+function BottomNav() {
   return (
     <nav className="bottom-nav">
-      <button
-        className={activeTab === "home" ? "nav-button active" : "nav-button"}
-        onClick={onGoHome}
-        aria-label="Home"
-      >
-        <House size={22} />
-      </button>
+      <NavLink to="/" end className={({ isActive }) => isActive ? "nav-button active" : "nav-button"}>
+        Home
+      </NavLink>
 
-      <button
-        className={activeTab === "myList" ? "nav-button active" : "nav-button"}
-        onClick={onGoMyList}
-        aria-label="My List"
-      >
-        <ListChecks size={22} />
-      </button>
+      <NavLink to="/drafts" className={({ isActive }) => isActive ? "nav-button active" : "nav-button"}>
+        My List
+      </NavLink>
 
-      <button
-        className={activeTab === "history" ? "nav-button active" : "nav-button"}
-        onClick={onGoHistory}
-        aria-label="History"
-      >
-        <History size={22} />
-      </button>
+      <NavLink to="/history" className={({ isActive }) => isActive ? "nav-button active" : "nav-button"}>
+        History
+      </NavLink>
     </nav>
   );
 }

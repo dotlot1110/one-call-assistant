@@ -1,16 +1,11 @@
+import { Routes, Route } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "./App.css";
 
-import HomeScreen from "./components/HomeScreen";
-import EditScreen from "./components/EditScreen";
-import CallScreen from "./components/CallScreen";
-import ResultScreen from "./components/ResultScreen";
-import HistoryScreen from "./components/HistoryScreen";
-import HistoryDetailScreen from "./components/HistoryDetailScreen";
-
-import BottomNav from "./components/BottomNav";
-import MyListScreen from "./components/MyListScreen";
-
+import AppLayout from "./layouts/AppLayout";
+import HomePage from "./pages/HomePage";
+import DraftsPage from "./pages/DraftsPage";
+import HistoryPage from "./pages/HistoryPage";
 
 const templates = {
   hospital: [
@@ -55,10 +50,12 @@ function App() {
   const [selectedTopic, setSelectedTopic] = useState("");
   const [checklist, setChecklist] = useState([]);
   const [newItem, setNewItem] = useState("");
-  const [screen, setScreen] = useState("home"); // home | edit | call | result | myList | history | historyDetail
   const [history, setHistory] = useState([]);
-  const [selectedHistoryItem, setSelectedHistoryItem] = useState(null);
   const [myLists, setMyLists] = useState([]);
+  const [selectedHistoryItem, setSelectedHistoryItem] = useState(null);
+
+  const [draftView, setDraftView] = useState("list");
+  const [historyView, setHistoryView] = useState("list");
 
   useEffect(() => {
     const savedHistory = localStorage.getItem(HISTORY_KEY);
@@ -80,31 +77,6 @@ function App() {
   function saveMyLists(nextMyLists) {
     setMyLists(nextMyLists);
     localStorage.setItem(MY_LIST_KEY, JSON.stringify(nextMyLists));
-  }
-
-  function handleSaveToMyList() {
-    const newRecord = {
-      id: crypto.randomUUID(),
-      topic: selectedTopic,
-      createdAt: new Date().toLocaleString(),
-      items: checklist
-    };
-
-    const nextMyLists = [newRecord, ...myLists];
-    saveMyLists(nextMyLists);
-    setScreen("myList");
-  }
-
-  function handleOpenMyList(record) {
-    setSelectedTopic(record.topic);
-    setChecklist(record.items);
-    setInput(record.topic);
-    setScreen("edit");
-  }
-
-  function handleDeleteMyList(idToDelete) {
-    const nextMyLists = myLists.filter((record) => record.id !== idToDelete);
-    saveMyLists(nextMyLists);
   }
 
   function handleGenerateFromInput() {
@@ -138,14 +110,14 @@ function App() {
       setChecklist(createChecklistItems(templates.generic));
     }
 
-    setScreen("edit");
+    setDraftView("edit");
   }
 
   function handleSelectTopic(topicName, templateKey) {
     setSelectedTopic(topicName);
     setChecklist(createChecklistItems(templates[templateKey]));
     setInput(topicName);
-    setScreen("edit");
+    setDraftView("edit");
   }
 
   function handleDeleteItem(idToDelete) {
@@ -193,7 +165,7 @@ function App() {
   }
 
   function handleCallNow() {
-    setScreen("call");
+    setDraftView("call");
   }
 
   function handleToggleItemStatus(id) {
@@ -215,10 +187,35 @@ function App() {
     );
 
     setChecklist(updatedChecklist);
-    setScreen("result");
+    setDraftView("result");
   }
 
-  function handleSaveToHistory() {
+  function handleSaveToMyList() {
+    const newRecord = {
+      id: crypto.randomUUID(),
+      topic: selectedTopic,
+      createdAt: new Date().toLocaleString(),
+      items: checklist
+    };
+
+    const nextMyLists = [newRecord, ...myLists];
+    saveMyLists(nextMyLists);
+    setDraftView("list");
+  }
+
+  function handleOpenMyList(record) {
+    setSelectedTopic(record.topic);
+    setChecklist(record.items);
+    setInput(record.topic);
+    setDraftView("edit");
+  }
+
+  function handleDeleteMyList(idToDelete) {
+    const nextMyLists = myLists.filter((record) => record.id !== idToDelete);
+    saveMyLists(nextMyLists);
+  }
+
+  function handleSaveResultToHistory() {
     const pendingItems = checklist.filter((item) => item.status === "pending");
     const recordStatus = pendingItems.length > 0 ? "pending" : "complete";
 
@@ -232,12 +229,12 @@ function App() {
 
     const nextHistory = [newRecord, ...history];
     saveHistory(nextHistory);
-    setScreen("history");
+    setHistoryView("list");
   }
 
   function handleOpenHistoryDetail(record) {
     setSelectedHistoryItem(record);
-    setScreen("historyDetail");
+    setHistoryView("detail");
   }
 
   function handleDeleteHistoryItem(idToDelete) {
@@ -246,7 +243,7 @@ function App() {
 
     if (selectedHistoryItem && selectedHistoryItem.id === idToDelete) {
       setSelectedHistoryItem(null);
-      setScreen("history");
+      setHistoryView("list");
     }
   }
 
@@ -255,8 +252,7 @@ function App() {
     setSelectedTopic("");
     setChecklist([]);
     setNewItem("");
-    setSelectedHistoryItem(null);
-    setScreen("home");
+    setDraftView("list");
   }
 
   const todoItems = checklist.filter((item) => item.status === "todo");
@@ -264,93 +260,66 @@ function App() {
   const pendingItems = checklist.filter((item) => item.status === "pending");
 
   return (
-    <div className="app">
-      <div className="phone-frame">
-        <h1>One-Call Completion Assistant</h1>
-
-        {screen === "home" && (
-          <HomeScreen
-            input={input}
-            setInput={setInput}
-            onGenerate={handleGenerateFromInput}
-            onSelectTopic={handleSelectTopic}
-          />
-        )}
-
-        {screen === "edit" && (
-          <EditScreen
-            selectedTopic={selectedTopic}
-            checklist={checklist}
-            newItem={newItem}
-            setNewItem={setNewItem}
-            onDeleteItem={handleDeleteItem}
-            onAddItem={handleAddItem}
-            onMoveItemUp={handleMoveItemUp}
-            onMoveItemDown={handleMoveItemDown}
-            onBackHome={() => setScreen("home")}
-            onCallNow={handleCallNow}
-            onSaveToMyList={handleSaveToMyList}
-          />
-        )}
-
-        {screen === "call" && (
-          <CallScreen
-            selectedTopic={selectedTopic}
-            todoItems={todoItems}
-            completeItems={completeItems}
-            onToggleItemStatus={handleToggleItemStatus}
-            onBackToEdit={() => setScreen("edit")}
-            onEndCall={handleEndCall}
-          />
-        )}
-
-        {screen === "result" && (
-          <ResultScreen
-            completeItems={completeItems}
-            pendingItems={pendingItems}
-            onBackToCall={() => setScreen("call")}
-            onSaveToHistory={handleSaveToHistory}
-            onStartOver={handleStartOver}
-          />
-        )}
-
-        {screen === "myList" && (
-          <MyListScreen
-            myLists={myLists}
-            onOpenMyList={handleOpenMyList}
-            onDeleteMyList={handleDeleteMyList}
-          />
-        )}
-
-        {screen === "history" && (
-          <HistoryScreen
-            history={history}
-            onOpenDetail={handleOpenHistoryDetail}
-          />
-        )}
-
-        {screen === "historyDetail" && selectedHistoryItem && (
-          <HistoryDetailScreen
-            selectedHistoryItem={selectedHistoryItem}
-            onBackToHistory={() => setScreen("history")}
-            onDeleteHistoryItem={handleDeleteHistoryItem}
-          />
-        )}
-
-        <BottomNav
-          activeTab={
-            screen === "home"
-              ? "home"
-              : screen === "history" || screen === "historyDetail"
-              ? "history"
-              : "myList"
+    <Routes>
+      <Route element={<AppLayout />}>
+        <Route
+          index
+          element={
+            <HomePage
+              input={input}
+              setInput={setInput}
+              onGenerate={handleGenerateFromInput}
+              onSelectTopic={handleSelectTopic}
+            />
           }
-          onGoHome={() => setScreen("home")}
-          onGoMyList={() => setScreen("myList")}
-          onGoHistory={() => setScreen("history")}
         />
-      </div>
-    </div>
+
+        <Route
+          path="drafts"
+          element={
+            <DraftsPage
+              draftView={draftView}
+              setDraftView={setDraftView}
+              myLists={myLists}
+              selectedTopic={selectedTopic}
+              checklist={checklist}
+              newItem={newItem}
+              setNewItem={setNewItem}
+              onDeleteItem={handleDeleteItem}
+              onAddItem={handleAddItem}
+              onMoveItemUp={handleMoveItemUp}
+              onMoveItemDown={handleMoveItemDown}
+              onCallNow={handleCallNow}
+              onSaveToMyList={handleSaveToMyList}
+              onToggleItemStatus={handleToggleItemStatus}
+              onEndCall={handleEndCall}
+              onBackToCall={() => setDraftView("call")}
+              onSaveResultToHistory={handleSaveResultToHistory}
+              onStartOver={handleStartOver}
+              onOpenMyList={handleOpenMyList}
+              onDeleteMyList={handleDeleteMyList}
+              todoItems={todoItems}
+              completeItems={completeItems}
+              pendingItems={pendingItems}
+            />
+          }
+        />
+
+        <Route
+          path="history"
+          element={
+            <HistoryPage
+              historyView={historyView}
+              setHistoryView={setHistoryView}
+              history={history}
+              selectedHistoryItem={selectedHistoryItem}
+              onOpenHistoryDetail={handleOpenHistoryDetail}
+              onDeleteHistoryItem={handleDeleteHistoryItem}
+            />
+          }
+        />
+      </Route>
+    </Routes>
   );
 }
 
