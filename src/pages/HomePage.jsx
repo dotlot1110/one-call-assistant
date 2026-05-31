@@ -1,21 +1,67 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { templates } from "../services/templates";
+import { addDraft } from "../services/storage";
 
-function HomePage({
-  input,
-  setInput,
-  onGenerate,
-  onSelectTopic
-}) {
-  const navigate = useNavigate();
+function createChecklistItems(items) {
+  return items.map((item) => ({
+    id: crypto.randomUUID(),
+    text: item,
+    status: "todo"
+  }));
+}
 
-  function handleGenerateClick() {
-    onGenerate();
-    navigate("/drafts");
+function classifyInput(text) {
+  const lower = text.toLowerCase();
+
+  if (
+    lower.includes("hospital") ||
+    lower.includes("clinic") ||
+    lower.includes("appointment") ||
+    lower.includes("reservation")
+  ) {
+    return { topic: "Hospital Reservation", templateKey: "hospital" };
   }
 
-  function handleTopicClick(topicName, templateKey) {
-    onSelectTopic(topicName, templateKey);
-    navigate("/drafts");
+  if (
+    lower.includes("job") ||
+    lower.includes("interview") ||
+    lower.includes("application") ||
+    lower.includes("part-time")
+  ) {
+    return { topic: "Job Application", templateKey: "job" };
+  }
+
+  if (
+    lower.includes("event") ||
+    lower.includes("schedule") ||
+    lower.includes("location")
+  ) {
+    return { topic: "Event Inquiry", templateKey: "event" };
+  }
+
+  return { topic: "Custom Inquiry", templateKey: "generic" };
+}
+
+function HomePage() {
+  const [input, setInput] = useState("");
+  const navigate = useNavigate();
+
+  function createDraft(topic, templateKey) {
+    const newDraft = {
+      id: crypto.randomUUID(),
+      topic,
+      createdAt: new Date().toLocaleString(),
+      items: createChecklistItems(templates[templateKey])
+    };
+
+    addDraft(newDraft);
+    navigate(`/drafts/${newDraft.id}/edit`);
+  }
+
+  function handleGenerate() {
+    const { topic, templateKey } = classifyInput(input);
+    createDraft(topic, templateKey);
   }
 
   return (
@@ -32,19 +78,19 @@ function HomePage({
         className="situation-input"
       />
 
-      <button className="generate-button" onClick={handleGenerateClick}>
+      <button className="generate-button" onClick={handleGenerate}>
         Generate Checklist
       </button>
 
       <h2>Popular Topics</h2>
       <div className="topic-grid">
-        <button onClick={() => handleTopicClick("Hospital Reservation", "hospital")}>
+        <button onClick={() => createDraft("Hospital Reservation", "hospital")}>
           Hospital Reservation
         </button>
-        <button onClick={() => handleTopicClick("Job Application", "job")}>
+        <button onClick={() => createDraft("Job Application", "job")}>
           Job Application
         </button>
-        <button onClick={() => handleTopicClick("Event Inquiry", "event")}>
+        <button onClick={() => createDraft("Event Inquiry", "event")}>
           Event Inquiry
         </button>
       </div>

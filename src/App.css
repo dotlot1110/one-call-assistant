@@ -150,9 +150,11 @@ h3 {
 .nav-button {
   background: none;
   border: none;
-  color: #666;
-  font-size: 13px;
   text-decoration: none;
+  color: #777;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .nav-button.active {

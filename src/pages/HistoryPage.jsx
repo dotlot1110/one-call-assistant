@@ -1,34 +1,26 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import HistoryScreen from "../components/HistoryScreen";
-import HistoryDetailScreen from "../components/HistoryDetailScreen";
+import { loadHistory, deleteHistoryRecord } from "../services/storage";
 
-function HistoryPage({
-  historyView,
-  setHistoryView,
-  history,
-  selectedHistoryItem,
-  onOpenHistoryDetail,
-  onDeleteHistoryItem
-}) {
-  if (historyView === "list") {
-    return (
-      <HistoryScreen
-        history={history}
-        onOpenDetail={onOpenHistoryDetail}
-      />
-    );
+function HistoryPage() {
+  const [history, setHistory] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setHistory(loadHistory());
+  }, []);
+
+  function handleOpenDetail(record) {
+    navigate(`/history/${record.id}`);
   }
 
-  if (historyView === "detail" && selectedHistoryItem) {
-    return (
-      <HistoryDetailScreen
-        selectedHistoryItem={selectedHistoryItem}
-        onBackToHistory={() => setHistoryView("list")}
-        onDeleteHistoryItem={onDeleteHistoryItem}
-      />
-    );
-  }
-
-  return null;
+  return (
+    <HistoryScreen
+      history={history}
+      onOpenDetail={handleOpenDetail}
+    />
+  );
 }
 
 export default HistoryPage;
