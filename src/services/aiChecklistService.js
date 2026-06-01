@@ -132,7 +132,7 @@ export async function generateChecklistWithAI(callSituation) {
 
   try {
     response = await ai.models.generateContent({
-      model: "gemini-2.5-flash",
+      model: "gemini-2.5-flash-lite",
       contents: buildPrompt(trimmedSituation),
       config: {
         responseFormat: {
