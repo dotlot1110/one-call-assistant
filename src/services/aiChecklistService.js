@@ -20,6 +20,34 @@ const CHECKLIST_SCHEMA = {
   required: ["topic", "items"],
 };
 
+/*
+High demand 발생 시 lite 모델 사용하도록 변경:
+gemini-2.5-flash-lite 요청
+→ 실패하면 1회 재시도
+→ 또 실패하면 gemini-2.5-flash 시도
+→ 또 또 실패하면 fallback template
+*/
+const MODEL_CANDIDATES = [
+  "gemini-2.5-flash-lite",
+  "gemini-2.5-flash",
+];
+
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function isRetryableGeminiError(error) {
+  const message = JSON.stringify(error);
+
+  return (
+    message.includes('"code":503') ||
+    message.includes("503") ||
+    message.includes("UNAVAILABLE") ||
+    message.includes("high demand") ||
+    message.includes("overloaded")
+  );
+}
+
 function buildPrompt(callSituation) {
   return `
 You are generating a checklist for a phone-call support app.
@@ -109,6 +137,21 @@ function normalizeChecklistResult(rawText, fallbackTopic = "Custom Inquiry") {
   };
 }
 
+async function requestChecklistFromGemini(ai, model, prompt) {
+  return ai.models.generateContent({
+    model,
+    contents: prompt,
+    config: {
+      responseFormat: {
+        text: {
+          mimeType: "application/json",
+          schema: CHECKLIST_SCHEMA,
+        },
+      },
+    },
+  });
+}
+
 export async function generateChecklistWithAI(callSituation) {
   const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
 
@@ -129,23 +172,33 @@ export async function generateChecklistWithAI(callSituation) {
   console.log("[AI] Sending request to Gemini...");
 
   let response;
+  let lastError;
+  const prompt = buildPrompt(trimmedSituation);
 
-  try {
-    response = await ai.models.generateContent({
-      model: "gemini-2.5-flash-lite",
-      contents: buildPrompt(trimmedSituation),
-      config: {
-        responseFormat: {
-          text: {
-            mimeType: "application/json",
-            schema: CHECKLIST_SCHEMA,
-          },
-        },
-      },
-    });
-  } catch (error) {
-    console.error("[AI_REQUEST] Gemini request failed:", error);
-    throw error;
+  for (const model of MODEL_CANDIDATES) {
+    for (let attempt = 1; attempt <= 2; attempt += 1) {
+      try {
+        console.log(`[AI] Sending request to Gemini: ${model}, attempt ${attempt}`);
+        response = await requestChecklistFromGemini(ai, model, prompt);
+        console.log(`[AI] Success with model: ${model}`);
+        break;
+      } catch (error) {
+        lastError = error;
+        console.error(`[AI_REQUEST] Failed with ${model}, attempt ${attempt}:`, error);
+
+        if (!isRetryableGeminiError(error)) {
+          throw error;
+        }
+
+        await wait(800 * attempt);
+      }
+    }
+
+    if (response) break;
+  }
+
+  if (!response) {
+    throw lastError || new Error("[AI_REQUEST] Gemini request failed.");
   }
 
   console.log("[AI] Raw response:", response.text);
