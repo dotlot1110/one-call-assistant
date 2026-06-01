@@ -1,7 +1,42 @@
+:root {
+  color: #111;
+  background: #f4f4f4;
+  color-scheme: light;
+}
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
   background: #f4f4f4;
+  color: #111;
+}
+
+button,
+input,
+textarea {
+  font-family: inherit;
+  color: #111;
+}
+
+button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+input,
+textarea {
+  background: white;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #888;
+  opacity: 1;
 }
 
 .app {
@@ -10,18 +45,6 @@ body {
   justify-content: center;
   align-items: center;
 }
-
-.phone-frame {
-  width: 360px;
-  min-height: 720px;
-  background: white;
-  border-radius: 24px;
-  padding: 24px 20px 90px;
-  box-sizing: border-box;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  position: relative;
-}
-
 
 h1 {
   font-size: 24px;
@@ -61,8 +84,7 @@ h3 {
 .end-call-button,
 .save-button,
 .restart-button,
-.secondary-button,
-.delete-history-button {
+.secondary-button {
   width: 100%;
   padding: 12px;
   font-size: 14px;
@@ -83,7 +105,6 @@ h3 {
   background: white;
   color: #111;
   border: 1px solid #ccc;
-  margin-top: 16px;
 }
 
 .edit-action-row {
@@ -103,6 +124,12 @@ h3 {
 }
 
 .delete-history-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 14px;
+  border: 1px solid #111;
+  border-radius: 12px;
+  cursor: pointer;
   background: #d64545;
   color: white;
 }
@@ -122,12 +149,48 @@ h3 {
   cursor: pointer;
 }
 
+/* status badge + inline delete */
+.status-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.draft-badge {
+  background: #eef2ff;
+  color: #4f46e5;
+}
+
+.mini-delete-button {
+  width: 22px;
+  height: 22px;
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  background: white;
+  color: #666;
+  font-size: 14px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.mini-delete-button:hover {
+  background: #f5f5f5;
+  color: #111;
+}
+
+/* bottom nav 기본값: 데스크탑에서는 기존 mockup 내부 */
 .phone-frame {
   width: 360px;
   min-height: 720px;
   background: white;
   border-radius: 24px;
-  padding: 24px 20px;
+  padding: 24px 20px 90px;
   box-sizing: border-box;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   position: relative;
@@ -145,6 +208,7 @@ h3 {
   border-top: 1px solid #ddd;
   background: white;
   border-radius: 0 0 24px 24px;
+  z-index: 20;
 }
 
 .nav-button {
@@ -157,29 +221,38 @@ h3 {
   justify-content: center;
 }
 
-.nav-button.active {
-  color: #111;
-  font-weight: 700;
-}
-
-.history-card-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.nav-button {
-  background: none;
-  border: none;
-  color: #777;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.nav-button svg {
+  color: inherit;
 }
 
 .nav-button.active {
   color: #111;
+}
+
+/* 모바일에서는 브라우저 하단에 고정 */
+@media (max-width: 768px) {
+  .app {
+    min-height: 100dvh;
+    align-items: stretch;
+  }
+
+  .phone-frame {
+    width: 100%;
+    min-height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+    padding: 24px 20px calc(100px + env(safe-area-inset-bottom));
+  }
+
+  .bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 0;
+    padding: 12px 10px calc(16px + env(safe-area-inset-bottom));
+    z-index: 1000;
+  }
 }
 
 .checklist-section,
@@ -262,10 +335,6 @@ h3 {
   margin: 0;
 }
 
-.call-button {
-  margin-top: 16px;
-}
-
 .call-columns {
   display: flex;
   flex-direction: column;
@@ -278,6 +347,7 @@ h3 {
   border-radius: 14px;
   padding: 12px;
   background: white;
+  margin-bottom: 16px;
 }
 
 .todo-item,
@@ -322,7 +392,11 @@ h3 {
 }
 
 .call-actions,
-.result-actions,
+.result-action-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
 .button-group {
   display: flex;
   flex-direction: column;

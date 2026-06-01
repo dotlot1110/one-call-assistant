@@ -7,7 +7,7 @@ function EditScreen({
   setNewItem,
   onDeleteItem,
   onAddItem,
-  onReorder,
+  onReorderByIndex,
   onCallNow,
   onSaveToMyList,
 }) {
@@ -19,7 +19,7 @@ function EditScreen({
       <SortableChecklist
         items={checklist}
         onDeleteItem={onDeleteItem}
-        onReorder={onReorder}
+        onReorderByIndex={onReorderByIndex}
       />
 
       <div className="add-item-row">

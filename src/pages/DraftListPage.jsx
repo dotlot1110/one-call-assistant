@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { loadDrafts, deleteDraft } from "../services/storage";
 import MyListScreen from "../components/MyListScreen";
+import { loadDrafts, deleteDraft } from "../services/storage";
 
 function DraftListPage() {
   const [drafts, setDrafts] = useState([]);

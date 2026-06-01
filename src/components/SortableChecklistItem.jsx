@@ -36,11 +36,12 @@ function SortableChecklistItem({ item, index, onDeleteItem }) {
       <span className="checklist-text">{item.text}</span>
 
       <button
-        className="delete-button"
+        className="mini-delete-button"
         type="button"
+        aria-label="Delete item"
         onClick={() => onDeleteItem(item.id)}
       >
-        Delete
+        ×
       </button>
     </li>
   );

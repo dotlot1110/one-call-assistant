@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { move } from "@dnd-kit/helpers";
-
+import { ITEM_STATUS } from "../constants/itemStatus";
 import EditScreen from "../components/EditScreen";
 import { getDraftById, updateDraft } from "../services/storage";
 
@@ -22,7 +21,11 @@ function EditDraftPage() {
   }
 
   function saveUpdatedItems(nextItems) {
-    const updatedDraft = { ...draft, items: nextItems };
+    const updatedDraft = {
+      ...draft,
+      items: nextItems,
+    };
+
     setDraft(updatedDraft);
     updateDraft(updatedDraft);
   }
@@ -40,7 +43,7 @@ function EditDraftPage() {
       {
         id: crypto.randomUUID(),
         text: newItem.trim(),
-        status: "todo",
+        status: ITEM_STATUS.TODO,
       },
     ];
 
@@ -48,15 +51,14 @@ function EditDraftPage() {
     setNewItem("");
   }
 
-  function handleReorder(activeId, overId) {
-    if (!draft || activeId === overId) return;
+  function handleReorderByIndex(oldIndex, newIndex) {
+    if (!draft) return;
+    if (oldIndex === newIndex) return;
 
-    const oldIndex = draft.items.findIndex((item) => item.id === activeId);
-    const newIndex = draft.items.findIndex((item) => item.id === overId);
+    const nextItems = [...draft.items];
+    const [movedItem] = nextItems.splice(oldIndex, 1);
+    nextItems.splice(newIndex, 0, movedItem);
 
-    if (oldIndex === -1 || newIndex === -1) return;
-
-    const nextItems = move(draft.items, oldIndex, newIndex);
     saveUpdatedItems(nextItems);
   }
 
@@ -76,7 +78,7 @@ function EditDraftPage() {
       setNewItem={setNewItem}
       onDeleteItem={handleDeleteItem}
       onAddItem={handleAddItem}
-      onReorder={handleReorder}
+      onReorderByIndex={handleReorderByIndex}
       onCallNow={handleCallNow}
       onSaveToMyList={handleSaveToMyList}
     />

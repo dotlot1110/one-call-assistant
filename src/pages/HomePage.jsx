@@ -1,67 +1,40 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { templates } from "../services/templates";
-import { addDraft } from "../services/storage";
-
-function createChecklistItems(items) {
-  return items.map((item) => ({
-    id: crypto.randomUUID(),
-    text: item,
-    status: "todo"
-  }));
-}
-
-function classifyInput(text) {
-  const lower = text.toLowerCase();
-
-  if (
-    lower.includes("hospital") ||
-    lower.includes("clinic") ||
-    lower.includes("appointment") ||
-    lower.includes("reservation")
-  ) {
-    return { topic: "Hospital Reservation", templateKey: "hospital" };
-  }
-
-  if (
-    lower.includes("job") ||
-    lower.includes("interview") ||
-    lower.includes("application") ||
-    lower.includes("part-time")
-  ) {
-    return { topic: "Job Application", templateKey: "job" };
-  }
-
-  if (
-    lower.includes("event") ||
-    lower.includes("schedule") ||
-    lower.includes("location")
-  ) {
-    return { topic: "Event Inquiry", templateKey: "event" };
-  }
-
-  return { topic: "Custom Inquiry", templateKey: "generic" };
-}
+import { classifyInput } from "../services/templateService";
+import { generateChecklistWithAI } from "../services/aiChecklistService";
+import { createDraftFromChecklist, createDraftFromTemplate } from "../services/draftService";
 
 function HomePage() {
   const [input, setInput] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
   const navigate = useNavigate();
-
+  // template 기반
   function createDraft(topic, templateKey) {
-    const newDraft = {
-      id: crypto.randomUUID(),
-      topic,
-      createdAt: new Date().toLocaleString(),
-      items: createChecklistItems(templates[templateKey])
-    };
-
-    addDraft(newDraft);
+    const newDraft = createDraftFromTemplate(topic, templateKey);
     navigate(`/drafts/${newDraft.id}/edit`);
   }
 
-  function handleGenerate() {
-    const { topic, templateKey } = classifyInput(input);
-    createDraft(topic, templateKey);
+  async function handleGenerate() {
+    if (isGenerating) return;
+
+    const trimmedInput = input.trim();
+    if (!trimmedInput) return;
+
+    setIsGenerating(true);
+
+    try {
+      const aiResult = await generateChecklistWithAI(trimmedInput);
+      const newDraft = createDraftFromChecklist(aiResult.topic, aiResult.items);
+      navigate(`/drafts/${newDraft.id}/edit`);
+    } catch (error) {
+      console.warn("AI generation failed. Using fallback template.", error);
+
+      const { topic, templateKey } = classifyInput(trimmedInput);
+      const newDraft = createDraftFromTemplate(topic, templateKey);
+      navigate(`/drafts/${newDraft.id}/edit`);
+    } finally {
+      setIsGenerating(false);
+    }
   }
 
   return (
@@ -78,20 +51,24 @@ function HomePage() {
         className="situation-input"
       />
 
-      <button className="generate-button" onClick={handleGenerate}>
-        Generate Checklist
+      <button
+        className="generate-button"
+        onClick={handleGenerate}
+        disabled={isGenerating}
+      >
+        {isGenerating ? "Generating..." : "Generate Checklist"}
       </button>
 
       <h2>Popular Topics</h2>
       <div className="topic-grid">
         <button onClick={() => createDraft("Hospital Reservation", "hospital")}>
-          Hospital Reservation
+          🏥 Hospital Reservation
         </button>
         <button onClick={() => createDraft("Job Application", "job")}>
-          Job Application
+          💼 Job Application
         </button>
         <button onClick={() => createDraft("Event Inquiry", "event")}>
-          Event Inquiry
+          📅 Event Inquiry
         </button>
       </div>
     </>

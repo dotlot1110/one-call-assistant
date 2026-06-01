@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import ResultScreen from "../components/ResultScreen";
-import { addHistoryRecord, getDraftById } from "../services/storage";
+import { getDraftById } from "../services/storage";
+import { completeDraftAsHistory } from "../services/callCompletionService";
+import { ITEM_STATUS } from "../constants/itemStatus";
 
 function DraftResultPage() {
   const { draftId } = useParams();
@@ -17,33 +19,19 @@ function DraftResultPage() {
     return <p className="subtitle">Draft not found.</p>;
   }
 
-  const completeItems = draft.items.filter((item) => item.status === "complete");
-  const pendingItems = draft.items.filter((item) => item.status === "pending");
+  const completeItems = draft.items.filter((item) => item.status === ITEM_STATUS.COMPLETE);
+  const pendingItems = draft.items.filter((item) => item.status === ITEM_STATUS.PENDING);
 
   function handleSaveToHistory() {
-    const newRecord = {
-      id: crypto.randomUUID(),
-      topic: draft.topic,
-      createdAt: new Date().toLocaleString(),
-      status: pendingItems.length > 0 ? "pending" : "complete",
-      items: draft.items
-    };
-
-    addHistoryRecord(newRecord);
+    completeDraftAsHistory(draft);
     navigate("/history");
-  }
-
-  function handleStartOver() {
-    navigate("/");
   }
 
   return (
     <ResultScreen
       completeItems={completeItems}
       pendingItems={pendingItems}
-      onBackToCall={() => navigate(`/drafts/${draft.id}/call`)}
       onSaveToHistory={handleSaveToHistory}
-      onStartOver={handleStartOver}
     />
   );
 }

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import CallScreen from "../components/CallScreen";
 import { getDraftById, updateDraft } from "../services/storage";
+import { ITEM_STATUS } from "../constants/itemStatus";
 
 function CallDraftPage() {
   const { draftId } = useParams();
@@ -17,8 +18,8 @@ function CallDraftPage() {
     return <p className="subtitle">Draft not found.</p>;
   }
 
-  const todoItems = draft.items.filter((item) => item.status === "todo");
-  const completeItems = draft.items.filter((item) => item.status === "complete");
+  const todoItems = draft.items.filter((item) => item.status === ITEM_STATUS.TODO);
+  const completeItems = draft.items.filter((item) => item.status === ITEM_STATUS.COMPLETE);
 
   function saveUpdatedItems(nextItems) {
     const updatedDraft = { ...draft, items: nextItems };
@@ -31,7 +32,7 @@ function CallDraftPage() {
       item.id === id
         ? {
             ...item,
-            status: item.status === "complete" ? "todo" : "complete"
+            status: item.status === ITEM_STATUS.COMPLETE ? ITEM_STATUS.TODO : ITEM_STATUS.COMPLETE,
           }
         : item
     );
@@ -41,7 +42,7 @@ function CallDraftPage() {
 
   function handleEndCall() {
     const nextItems = draft.items.map((item) =>
-      item.status === "todo" ? { ...item, status: "pending" } : item
+      item.status === ITEM_STATUS.TODO ? { ...item, status: ITEM_STATUS.PENDING } : item
     );
 
     saveUpdatedItems(nextItems);

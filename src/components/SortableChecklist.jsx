@@ -1,25 +1,32 @@
 import { useState } from "react";
 import { DragDropProvider, DragOverlay } from "@dnd-kit/react";
+import { isSortable } from "@dnd-kit/react/sortable";
 import SortableChecklistItem from "./SortableChecklistItem";
 
-function SortableChecklist({ items, onDeleteItem, onReorder }) {
+function SortableChecklist({ items, onDeleteItem, onReorderByIndex }) {
   const [activeItemId, setActiveItemId] = useState(null);
 
   const activeItem = items.find((item) => item.id === activeItemId);
 
   return (
     <DragDropProvider
-      onDragStart={({ source }) => {
-        setActiveItemId(source?.id ?? null);
+      onDragStart={({ operation }) => {
+        setActiveItemId(operation.source?.id ?? null);
       }}
-      onDragEnd={({ source, target, canceled }) => {
+      onDragEnd={(event) => {
         setActiveItemId(null);
 
-        if (canceled) return;
-        if (!target) return;
-        if (source.id === target.id) return;
+        if (event.canceled) return;
 
-        onReorder(source.id, target.id);
+        const { source } = event.operation;
+
+        if (isSortable(source)) {
+          const { initialIndex, index } = source;
+
+          if (initialIndex !== index) {
+            onReorderByIndex(initialIndex, index);
+          }
+        }
       }}
       onDragCancel={() => {
         setActiveItemId(null);
@@ -38,9 +45,7 @@ function SortableChecklist({ items, onDeleteItem, onReorder }) {
 
       <DragOverlay>
         {activeItem ? (
-          <div className="drag-overlay-card">
-            {activeItem.text}
-          </div>
+          <div className="drag-overlay-card">{activeItem.text}</div>
         ) : null}
       </DragOverlay>
     </DragDropProvider>

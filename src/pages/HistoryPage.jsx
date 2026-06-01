@@ -15,10 +15,16 @@ function HistoryPage() {
     navigate(`/history/${record.id}`);
   }
 
+  function handleDeleteHistory(recordId) {
+    deleteHistoryRecord(recordId);
+    setHistory(loadHistory());
+  }
+
   return (
     <HistoryScreen
       history={history}
       onOpenDetail={handleOpenDetail}
+      onDeleteHistory={handleDeleteHistory}
     />
   );
 }

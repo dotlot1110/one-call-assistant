@@ -1,13 +1,15 @@
+import { ITEM_STATUS } from "../constants/itemStatus";
+
 function HistoryDetailScreen({
   selectedHistoryItem,
   onBackToHistory,
   onDeleteHistoryItem
 }) {
   const pendingItems = selectedHistoryItem.items.filter(
-    (item) => item.status === "pending"
+    (item) => item.status === ITEM_STATUS.PENDING
   );
   const completeItems = selectedHistoryItem.items.filter(
-    (item) => item.status === "complete"
+    (item) => item.status === ITEM_STATUS.COMPLETE
   );
 
   return (
@@ -41,15 +43,19 @@ function HistoryDetailScreen({
         )}
       </div>
 
-      <div className="result-actions">
-        <button className="secondary-button" onClick={onBackToHistory}>
-          Back
-        </button>
+      <div className="result-action-row">
         <button
-          className="delete-history-button"
+          className="delete-history-button half-button"
+          type="button"
           onClick={() => onDeleteHistoryItem(selectedHistoryItem.id)}
         >
           Delete
+        </button>
+        <button
+          className="secondary-button half-button"
+          type="button"
+          onClick={onBackToHistory}>
+          Back
         </button>
       </div>
     </div>

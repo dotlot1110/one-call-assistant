@@ -1,9 +1,7 @@
 function ResultScreen({
   completeItems,
   pendingItems,
-  onBackToCall,
   onSaveToHistory,
-  onStartOver
 }) {
   return (
     <div className="result-screen">
@@ -46,14 +44,12 @@ function ResultScreen({
       </div>
 
       <div className="result-actions">
-        <button className="secondary-button" onClick={onBackToCall}>
-          Back to Call
-        </button>
-        <button className="save-button" onClick={onSaveToHistory}>
-          Save to History
-        </button>
-        <button className="restart-button" onClick={onStartOver}>
-          Start Over
+        <button
+          className="save-button"
+          onClick={onSaveToHistory}
+          type="button"
+        >
+          Save and Exit
         </button>
       </div>
     </div>

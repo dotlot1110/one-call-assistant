@@ -1,4 +1,4 @@
-function HistoryScreen({ history, onOpenDetail }) {
+function HistoryScreen({ history, onOpenDetail, onDeleteHistory }) {
   return (
     <div className="history-screen">
       <h2>Call History</h2>
@@ -13,19 +13,36 @@ function HistoryScreen({ history, onOpenDetail }) {
               key={record.id}
               className="history-card"
               onClick={() => onOpenDetail(record)}
+              type="button"
             >
               <div className="history-top">
                 <span className="history-topic">{record.topic}</span>
-                <span
-                  className={
-                    record.status === "complete"
-                      ? "status-badge complete-badge"
-                      : "status-badge pending-badge"
-                  }
-                >
-                  {record.status}
-                </span>
+
+                <div className="status-actions">
+                  <span
+                    className={
+                      record.status === "complete"
+                        ? "status-badge complete-badge"
+                        : "status-badge pending-badge"
+                    }
+                  >
+                    {record.status}
+                  </span>
+
+                  <button
+                    type="button"
+                    className="mini-delete-button"
+                    aria-label="Delete history record"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDeleteHistory(record.id);
+                    }}
+                  >
+                    ×
+                  </button>
+                </div>
               </div>
+
               <div className="history-date">{record.createdAt}</div>
             </button>
           ))}
