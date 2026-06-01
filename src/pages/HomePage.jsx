@@ -45,7 +45,7 @@ function HomePage() {
 
       <input
         type="text"
-        placeholder="Enter a call situation"
+        placeholder="e.g. Schedule a dental appointment"
         value={input}
         onChange={(e) => setInput(e.target.value)}
         className="situation-input"
