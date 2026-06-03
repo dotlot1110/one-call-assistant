@@ -15,7 +15,7 @@ function HistoryDetailScreen({
   return (
     <div className="history-detail-screen">
       <h2>{selectedHistoryItem.topic}</h2>
-      <p className="subtitle">Saved call result</p>
+      <p className="subtitle">Saved call record</p>
 
       <div className="result-section">
         <h3>Pending</h3>

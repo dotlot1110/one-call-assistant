@@ -8,7 +8,7 @@ function ResultScreen({
       <h2>
         {pendingItems.length === 0
           ? "You've completed all the questions!"
-          : "Review unresolved items"}
+          : "Review items left unresolved"}
       </h2>
 
       <p className="subtitle">

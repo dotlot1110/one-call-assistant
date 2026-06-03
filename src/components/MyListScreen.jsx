@@ -9,34 +9,29 @@ function MyListScreen({ myLists, onOpenMyList, onDeleteMyList }) {
       ) : (
         <div className="history-list">
           {myLists.map((record) => (
-            <button
-              key={record.id}
-              className="history-card"
-              onClick={() => onOpenMyList(record)}
-              type="button"
-            >
-              <div className="history-top">
+            <div key={record.id} className="history-card">
+              <button
+                className="history-card-main"
+                type="button"
+                onClick={() => onOpenMyList(record)}
+              >
                 <span className="history-topic">{record.topic}</span>
+                <span className="history-date">{record.createdAt}</span>
+              </button>
 
-                <div className="status-actions">
-                  <span className="status-badge draft-badge">Draft</span>
+              <div className="status-actions">
+                <span className="status-badge draft-badge">Draft</span>
 
-                  <button
-                    type="button"
-                    className="mini-delete-button"
-                    aria-label="Delete draft"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onDeleteMyList(record.id);
-                    }}
-                  >
-                    ×
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  className="mini-delete-button"
+                  aria-label="Delete draft"
+                  onClick={() => onDeleteMyList(record.id)}
+                >
+                  ×
+                </button>
               </div>
-
-              <div className="history-date">{record.createdAt}</div>
-            </button>
+            </div>
           ))}
         </div>
       )}

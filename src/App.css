@@ -204,7 +204,7 @@ h3 {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 12px 10px 16px;
+  padding: 8px 10px 12px;
   border-top: 1px solid #ddd;
   background: white;
   border-radius: 0 0 24px 24px;
@@ -217,12 +217,22 @@ h3 {
   text-decoration: none;
   color: #777;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 3px;
+  min-width: 64px;
+  font-size: 11px;
 }
 
 .nav-button svg {
   color: inherit;
+}
+
+.nav-label {
+  line-height: 1;
+  font-size: 11px;
+  font-weight: 500;
 }
 
 .nav-button.active {
@@ -241,7 +251,7 @@ h3 {
     min-height: 100dvh;
     border-radius: 0;
     box-shadow: none;
-    padding: 24px 20px calc(100px + env(safe-area-inset-bottom));
+    padding: 24px 20px calc(112px + env(safe-area-inset-bottom));
   }
 
   .bottom-nav {
@@ -250,12 +260,13 @@ h3 {
     right: 0;
     bottom: 0;
     border-radius: 0;
-    padding: 12px 10px calc(16px + env(safe-area-inset-bottom));
+    padding: 8px 10px calc(12px + env(safe-area-inset-bottom));
     z-index: 1000;
   }
 }
 
 .checklist-section,
+.ready-call-screen,
 .call-screen,
 .result-screen,
 .history-screen,
@@ -333,6 +344,36 @@ h3 {
   width: 50px;
   flex-shrink: 0;
   margin: 0;
+}
+
+.ready-instructions {
+  border: 1px solid #e3e3e3;
+  border-radius: 14px;
+  padding: 14px;
+  background: white;
+  margin-top: 16px;
+}
+
+.ready-message {
+  margin: 0 0 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+}
+
+.ready-step-list {
+  margin: 0;
+  padding-left: 20px;
+  font-size: 14px;
+  color: #333;
+}
+
+.ready-step-list li {
+  margin-bottom: 8px;
+}
+
+.ready-step-list li:last-child {
+  margin-bottom: 0;
 }
 
 .call-columns {
@@ -417,7 +458,33 @@ h3 {
   border: 1px solid #ddd;
   background: white;
   text-align: left;
+  box-sizing: border-box;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.history-card-main {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  padding: 0;
+  text-align: left;
   cursor: pointer;
+  color: #111;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.history-card-main:focus-visible {
+  outline: 2px solid #111;
+  outline-offset: 4px;
+  border-radius: 8px;
 }
 
 .history-top {

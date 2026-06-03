@@ -55,7 +55,6 @@ function CallDraftPage() {
       todoItems={todoItems}
       completeItems={completeItems}
       onToggleItemStatus={handleToggleItemStatus}
-      onBackToEdit={() => navigate(`/drafts/${draft.id}/edit`)}
       onEndCall={handleEndCall}
     />
   );

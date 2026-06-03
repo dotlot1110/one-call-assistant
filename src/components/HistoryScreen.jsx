@@ -9,42 +9,37 @@ function HistoryScreen({ history, onOpenDetail, onDeleteHistory }) {
       ) : (
         <div className="history-list">
           {history.map((record) => (
-            <button
-              key={record.id}
-              className="history-card"
-              onClick={() => onOpenDetail(record)}
-              type="button"
-            >
-              <div className="history-top">
+            <div key={record.id} className="history-card">
+              <button
+                className="history-card-main"
+                type="button"
+                onClick={() => onOpenDetail(record)}
+              >
                 <span className="history-topic">{record.topic}</span>
+                <span className="history-date">{record.createdAt}</span>
+              </button>
 
-                <div className="status-actions">
-                  <span
-                    className={
-                      record.status === "complete"
-                        ? "status-badge complete-badge"
-                        : "status-badge pending-badge"
-                    }
-                  >
-                    {record.status}
-                  </span>
+              <div className="status-actions">
+                <span
+                  className={
+                    record.status === "complete"
+                      ? "status-badge complete-badge"
+                      : "status-badge pending-badge"
+                  }
+                >
+                  {record.status}
+                </span>
 
-                  <button
-                    type="button"
-                    className="mini-delete-button"
-                    aria-label="Delete history record"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onDeleteHistory(record.id);
-                    }}
-                  >
-                    ×
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  className="mini-delete-button"
+                  aria-label="Delete history record"
+                  onClick={() => onDeleteHistory(record.id)}
+                >
+                  ×
+                </button>
               </div>
-
-              <div className="history-date">{record.createdAt}</div>
-            </button>
+            </div>
           ))}
         </div>
       )}

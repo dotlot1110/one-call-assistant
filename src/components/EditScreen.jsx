@@ -14,7 +14,7 @@ function EditScreen({
   return (
     <div className="checklist-section">
       <h2>{selectedTopic}</h2>
-      <p className="subtitle">Customize the checklist before the call.</p>
+      <p className="subtitle">Review and customize your checklist before the call.</p>
 
       <SortableChecklist
         items={checklist}
@@ -53,7 +53,7 @@ function EditScreen({
           type="button"
           onClick={onCallNow}
         >
-          Call now
+          Ready to call
         </button>
       </div>
     </div>

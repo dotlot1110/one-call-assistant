@@ -67,7 +67,7 @@ function EditDraftPage() {
   }
 
   function handleCallNow() {
-    navigate(`/drafts/${draft.id}/call`);
+    navigate(`/drafts/${draft.id}/ready`);
   }
 
   return (

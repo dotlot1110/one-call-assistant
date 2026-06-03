@@ -11,6 +11,7 @@ function BottomNav() {
         aria-label="Home"
       >
         <House size={22} strokeWidth={2.2} />
+        <span className="nav-label">Home</span>
       </NavLink>
 
       <NavLink
@@ -19,6 +20,7 @@ function BottomNav() {
         aria-label="My List"
       >
         <ListChecks size={22} strokeWidth={2.2} />
+        <span className="nav-label">Lists</span>
       </NavLink>
 
       <NavLink
@@ -27,6 +29,7 @@ function BottomNav() {
         aria-label="History"
       >
         <History size={22} strokeWidth={2.2} />
+        <span className="nav-label">History</span>
       </NavLink>
     </nav>
   );

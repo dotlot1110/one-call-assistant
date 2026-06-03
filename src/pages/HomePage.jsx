@@ -40,7 +40,7 @@ function HomePage() {
   return (
     <>
       <p className="subtitle">
-        Enter a situation or choose a popular topic.
+        Describe your situation or choose a common topic.
       </p>
 
       <input
@@ -56,10 +56,10 @@ function HomePage() {
         onClick={handleGenerate}
         disabled={isGenerating}
       >
-        {isGenerating ? "Generating..." : "Generate Checklist"}
+        {isGenerating ? "Generating..." : "Generate checklist"}
       </button>
 
-      <h2>Popular Topics</h2>
+      <h2>Common Topics</h2>
       <div className="topic-grid">
         <button onClick={() => createDraft("Hospital Reservation", "hospital")}>
           🏥 Hospital Reservation
