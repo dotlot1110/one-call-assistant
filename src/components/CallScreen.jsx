@@ -7,22 +7,46 @@ function CallScreen({
 }) {
   const totalItems = todoItems.length + completeItems.length;
   const completedCount = completeItems.length;
-
+  const completionPercent = totalItems === 0 ? 0 : Math.round((completedCount / totalItems) * 100);
   return (
     <div className="call-screen call-mode-screen">
       <div className="call-mode-header">
-        <span className="call-mode-badge">Live call mode</span>
+        <div className="call-mode-top">
+          <div className="call-mode-title-block">
+            <span className="call-mode-badge">Live call mode</span>
+            <h2 className="call-mode-title">Call checklist</h2>
+          </div>
 
-        <h2>Call checklist</h2>
+          <div className="call-progress-number" aria-label="Completion progress">
+            <strong>{completedCount}</strong>
+            <span>/{totalItems}</span>
+          </div>
+        </div>
 
-        <p className="subtitle">
-          Use this checklist during your call. Tap an item when it is completed.
+        <p className="subtitle call-mode-subtitle">
+          Tap an item when it is completed.
         </p>
 
         <div className="call-topic-chip">{selectedTopic}</div>
 
-        <div className="call-progress-text">
-          {completedCount} of {totalItems} items completed
+        <div className="call-progress-card">
+          <div className="call-progress-meta">
+            <span>Completion</span>
+            <span>{completionPercent}%</span>
+          </div>
+
+          <div
+            className="call-progress-bar"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow={completionPercent}
+          >
+            <div
+              className="call-progress-fill"
+              style={{ width: `${completionPercent}%` }}
+            />
+          </div>
         </div>
       </div>
 
