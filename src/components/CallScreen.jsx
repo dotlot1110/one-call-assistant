@@ -24,7 +24,7 @@ function CallScreen({
         </div>
 
         <p className="subtitle call-mode-subtitle">
-          Tap an item when it is completed.
+          Tap the completed items during the call.
         </p>
 
         <div className="call-topic-chip">{selectedTopic}</div>

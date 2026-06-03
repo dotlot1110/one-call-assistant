@@ -200,6 +200,10 @@ h3 {
   box-shadow: var(--shadow-frame);
 }
 
+.phone-frame-no-bottom-nav {
+  padding-bottom: 24px;
+}
+
 /* =========================================================
    4. Buttons
    - Primary: main forward action
@@ -283,6 +287,10 @@ h3 {
   margin-top: 16px;
 }
 
+.result-actions {
+  margin-top: 16px;
+}
+
 .half-button {
   flex: 1;
   width: auto;
@@ -353,9 +361,21 @@ h3 {
 }
 
 .inline-add-button {
-  width: 50px;
+  width: 43px;
+  height: 43px;
   flex-shrink: 0;
   margin: 0;
+  padding: 0;
+}
+
+.icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-button svg {
+  color: inherit;
 }
 
 /* =========================================================
@@ -1203,6 +1223,10 @@ button.complete-item:hover {
     padding: 24px 20px calc(112px + env(safe-area-inset-bottom));
     border-radius: 0;
     box-shadow: none;
+  }
+
+  .phone-frame-no-bottom-nav {
+    padding-bottom: calc(24px + env(safe-area-inset-bottom));
   }
 
   .bottom-nav {

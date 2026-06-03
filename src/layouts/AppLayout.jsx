@@ -1,11 +1,23 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import BottomNav from "../components/BottomNav";
 import callPilotLogo from "../assets/callpilot-logo.png";
 
 function AppLayout() {
+  const location = useLocation();
+
+  const shouldHideBottomNav =
+    location.pathname.startsWith("/drafts/") &&
+    (location.pathname.endsWith("/call") || location.pathname.endsWith("/result"));
+
   return (
     <div className="app">
-      <div className="phone-frame">
+      <div
+        className={
+          shouldHideBottomNav
+            ? "phone-frame phone-frame-no-bottom-nav"
+            : "phone-frame"
+        }
+      >
         <header className="app-header">
           <img
             src={callPilotLogo}
@@ -23,7 +35,7 @@ function AppLayout() {
 
         <Outlet />
 
-        <BottomNav />
+        {!shouldHideBottomNav && <BottomNav />}
       </div>
     </div>
   );

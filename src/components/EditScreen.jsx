@@ -1,4 +1,5 @@
 import SortableChecklist from "./SortableChecklist";
+import { Plus } from "lucide-react";
 
 function EditScreen({
   selectedTopic,
@@ -31,11 +32,13 @@ function EditScreen({
           className="new-item-input inline-input"
         />
         <button
-          className="add-button inline-add-button"
+          className="add-button inline-add-button icon-button"
           type="button"
           onClick={onAddItem}
+          aria-label="Add checklist item"
+          title="Add item"
         >
-          Add
+          <Plus size={18} strokeWidth={2.5} />
         </button>
       </div>
 
@@ -45,7 +48,7 @@ function EditScreen({
           type="button"
           onClick={onSaveToMyList}
         >
-          Save
+          Save draft
         </button>
 
         <button
