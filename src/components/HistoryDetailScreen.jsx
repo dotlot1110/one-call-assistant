@@ -18,9 +18,9 @@ function HistoryDetailScreen({
       <p className="subtitle">Saved call record</p>
 
       <div className="result-section">
-        <h3>Pending</h3>
+        <h3>Unresolved</h3>
         {pendingItems.length === 0 ? (
-          <div className="empty-box">No pending items.</div>
+          <div className="empty-box">No unresolved items.</div>
         ) : (
           pendingItems.map((item) => (
             <div key={item.id} className="pending-item">
@@ -31,7 +31,7 @@ function HistoryDetailScreen({
       </div>
 
       <div className="result-section">
-        <h3>Complete</h3>
+        <h3>Completed</h3>
         {completeItems.length === 0 ? (
           <div className="empty-box">No completed items.</div>
         ) : (

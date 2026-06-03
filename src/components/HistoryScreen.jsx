@@ -8,39 +8,44 @@ function HistoryScreen({ history, onOpenDetail, onDeleteHistory }) {
         <div className="empty-box">No history yet.</div>
       ) : (
         <div className="history-list">
-          {history.map((record) => (
-            <div key={record.id} className="history-card">
-              <button
-                className="history-card-main"
-                type="button"
-                onClick={() => onOpenDetail(record)}
-              >
-                <span className="history-topic">{record.topic}</span>
-                <span className="history-date">{record.createdAt}</span>
-              </button>
+          {history.map((record) => {
+            const isComplete = record.status === "complete";
+            const statusLabel = isComplete ? "Completed" : "Unresolved";
 
-              <div className="status-actions">
-                <span
-                  className={
-                    record.status === "complete"
-                      ? "status-badge complete-badge"
-                      : "status-badge pending-badge"
-                  }
-                >
-                  {record.status}
-                </span>
-
+            return (
+              <div key={record.id} className="history-card">
                 <button
+                  className="history-card-main"
                   type="button"
-                  className="mini-delete-button"
-                  aria-label="Delete history record"
-                  onClick={() => onDeleteHistory(record.id)}
+                  onClick={() => onOpenDetail(record)}
                 >
-                  ×
+                  <span className="history-topic">{record.topic}</span>
+                  <span className="history-date">{record.createdAt}</span>
                 </button>
+
+                <div className="status-actions">
+                  <span
+                    className={
+                      isComplete
+                        ? "status-badge complete-badge"
+                        : "status-badge pending-badge"
+                    }
+                  >
+                    {statusLabel}
+                  </span>
+
+                  <button
+                    type="button"
+                    className="mini-delete-button"
+                    aria-label="Delete history record"
+                    onClick={() => onDeleteHistory(record.id)}
+                  >
+                    ×
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>
