@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ITEM_STATUS } from "../constants/itemStatus";
 import EditScreen from "../components/EditScreen";
 import { getDraftById, updateDraft } from "../services/storage";
+import ReadyCallDialog from "../components/ReadyCallDialog";
 
 function EditDraftPage() {
   const { draftId } = useParams();
@@ -10,6 +11,7 @@ function EditDraftPage() {
 
   const [draft, setDraft] = useState(null);
   const [newItem, setNewItem] = useState("");
+  const [isReadyDialogOpen, setIsReadyDialogOpen] = useState(false);
 
   useEffect(() => {
     const foundDraft = getDraftById(draftId);
@@ -67,21 +69,39 @@ function EditDraftPage() {
   }
 
   function handleCallNow() {
-    navigate(`/drafts/${draft.id}/ready`);
+    setIsReadyDialogOpen(true);
+  }
+
+  function handleCancelReadyCall() {
+    setIsReadyDialogOpen(false);
+  }
+
+  function handleStartCall() {
+    setIsReadyDialogOpen(false);
+    navigate(`/drafts/${draft.id}/call`);
   }
 
   return (
-    <EditScreen
-      selectedTopic={draft.topic}
-      checklist={draft.items}
-      newItem={newItem}
-      setNewItem={setNewItem}
-      onDeleteItem={handleDeleteItem}
-      onAddItem={handleAddItem}
-      onReorderByIndex={handleReorderByIndex}
-      onCallNow={handleCallNow}
-      onSaveToMyList={handleSaveToMyList}
-    />
+    <>
+      <EditScreen
+        selectedTopic={draft.topic}
+        checklist={draft.items}
+        newItem={newItem}
+        setNewItem={setNewItem}
+        onDeleteItem={handleDeleteItem}
+        onAddItem={handleAddItem}
+        onReorderByIndex={handleReorderByIndex}
+        onCallNow={handleCallNow}
+        onSaveToMyList={handleSaveToMyList}
+      />
+
+      <ReadyCallDialog
+        isOpen={isReadyDialogOpen}
+        selectedTopic={draft.topic}
+        onCancel={handleCancelReadyCall}
+        onStartCall={handleStartCall}
+      />
+    </>
   );
 }
 

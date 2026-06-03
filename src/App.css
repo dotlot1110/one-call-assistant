@@ -506,7 +506,6 @@ h3 {
 ========================================================= */
 
 .checklist-section,
-.ready-call-screen,
 .call-screen,
 .result-screen,
 .history-screen,
@@ -524,21 +523,6 @@ h3 {
    8. Ready-to-call screen
 ========================================================= */
 
-.ready-instructions {
-  margin-top: 16px;
-  padding: 14px;
-  border: 1px solid #e3e3e3;
-  border-radius: var(--radius-card);
-  background: var(--color-surface);
-}
-
-.ready-message {
-  margin: 0 0 12px;
-  color: #333;
-  font-size: 14px;
-  line-height: 1.5;
-}
-
 .ready-step-list {
   margin: 0;
   padding-left: 20px;
@@ -554,6 +538,49 @@ h3 {
   margin-bottom: 0;
 }
 
+/* Ready-to-call overlay */
+
+.ready-call-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1300;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+
+  background: rgba(17, 17, 17, 0.42);
+  backdrop-filter: blur(4px);
+  border-radius: inherit;
+}
+
+.ready-call-modal {
+  width: 100%;
+  max-width: 310px;
+  padding: 22px 18px;
+  border-radius: 20px;
+  border: 1px solid var(--color-border-light);
+  background: var(--color-surface);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
+}
+
+.ready-call-title {
+  margin: 12px 0 8px;
+  font-size: 18px;
+  line-height: 1.25;
+}
+
+.ready-call-message {
+  margin: 0 0 14px;
+  color: var(--color-muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.ready-modal-steps {
+  margin-top: 14px;
+}
 
 /* =========================================================
    9. Checklist display and editable checklist
@@ -755,9 +782,7 @@ h3 {
   border-radius: var(--radius-control);
   font-size: 14px;
   text-align: left;
-  border-radius: var(--radius-control);
   box-shadow: none;
-  transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
 }
 
 .todo-item {
@@ -770,8 +795,14 @@ h3 {
   background: var(--color-success-bg);
 }
 
-.todo-item:hover,
-.complete-item:hover {
+button.todo-item,
+button.complete-item {
+  cursor: pointer;
+  transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+}
+
+button.todo-item:hover,
+button.complete-item:hover {
   transform: translateY(-1px);
 }
 
@@ -782,6 +813,11 @@ h3 {
 
 .static-item {
   cursor: default;
+  transition: none;
+}
+
+.static-item:hover {
+  transform: none;
 }
 
 .empty-box {
@@ -1063,7 +1099,8 @@ h3 {
   }
 
   .ai-loading-overlay,
-  .confirm-overlay {
+  .confirm-overlay,
+  .ready-call-overlay {
     position: fixed;
     border-radius: 0;
     z-index: 2000;
